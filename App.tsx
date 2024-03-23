@@ -1,117 +1,130 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
-
-import React from 'react';
-import type {PropsWithChildren} from 'react';
+import React, {useState} from 'react';
 import {
   SafeAreaView,
-  ScrollView,
-  StatusBar,
   StyleSheet,
-  Text,
-  useColorScheme,
+  TextInput,
   View,
+  Text,
+  TouchableOpacity,
+  Platform,
 } from 'react-native';
 
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+const App = () => {
+  const [name, setName] = useState('');
+  const [age, setAge] = useState('');
+  const [password, setPassword] = useState('');
 
-type SectionProps = PropsWithChildren<{
-  title: string;
-}>;
+  const handleNameChange = val => {
+    setName(val);
+  };
 
-function Section({children, title}: SectionProps): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
-  return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
-    </View>
-  );
-}
+  const handleAgeChange = val => {
+    setAge(val);
+  };
 
-function App(): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
+  const handlePasswordChange = val => {
+    setPassword(val);
+  };
 
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
+  const handleSubmit = () => {
+    // Handle form submission here
+    console.log('Submitted:', {name, age, password});
+  };
+
+  const handleDelete = () => {
+    // Handle delete action here
+    setName('');
+    setAge('');
+    setPassword('');
   };
 
   return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
-      />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Header />
+    <SafeAreaView style={styles.container}>
+      <View style={styles.inputContainer}>
+        <Text style={styles.header}>Enter your details</Text>
+        <TextInput
+          style={styles.textInput}
+          placeholder="Enter your name"
+          onChangeText={handleNameChange}
+          value={name}
+        />
+        <TextInput
+          style={styles.textInput}
+          placeholder="Enter your age"
+          onChangeText={handleAgeChange}
+          value={age}
+          keyboardType={Platform.OS === 'ios' ? 'number-pad' : 'numeric'}
+        />
+        <TextInput
+          style={styles.textInput}
+          placeholder="Enter your password"
+          onChangeText={handlePasswordChange}
+          value={password}
+          secureTextEntry
+        />
+      </View>
+
+      <TouchableOpacity style={styles.buttonContainer} onPress={handleSubmit}>
         <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.tsx</Text> to change this
-            screen and then come back to see your edits.
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
+          style={[
+            styles.button,
+            {backgroundColor: Platform.OS === 'ios' ? '#4CAF50' : '#4CAF50'},
+          ]}>
+          <Text style={styles.buttonText}>Submit</Text>
         </View>
-      </ScrollView>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.buttonContainer} onPress={handleDelete}>
+        <View
+          style={[
+            styles.button,
+            {backgroundColor:  Platform.OS === 'ios' ? '#f44336' : '#f44336'},
+          ]}>
+          <Text style={styles.buttonText}>Delete</Text>
+        </View>
+      </TouchableOpacity>
     </SafeAreaView>
   );
-}
+};
 
 const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#fff',
   },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
+  inputContainer: {
+    width: '100%',
+    paddingHorizontal: 20, // Add horizontal padding to ensure spacing from screen edges
   },
-  sectionDescription: {
-    marginTop: 8,
+  header: {
+    fontSize: 30,
+    marginVertical: 20,
+  },
+  textInput: {
+    fontSize: 20,
+    color: 'blue',
+    borderWidth: 2,
+    borderColor: '#333',
+    marginVertical: 10,
+    paddingHorizontal: 10,
+    borderRadius: 5,
+    width: '100%',
+    height: 50, // Set the height to 50 pixels
+  },
+  buttonContainer: {
+    marginVertical: 10,
+    width: '80%',
+  },
+  button: {
+    padding: 10,
+    borderRadius: 5,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  buttonText: {
+    color: 'white',
     fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
   },
 });
 
